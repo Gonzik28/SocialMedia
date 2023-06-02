@@ -1,0 +1,1 @@
+ALTER TABLE posts ADD COLUMN create_date TIMESTAMP;
