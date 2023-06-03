@@ -21,8 +21,12 @@ public class AccountService {
     }
 
     public ResponseAccountDto findByUserName(String userName) {
-        AccountEntity rightEntity = accountRepository.findByUserName(userName).get();
-        return AccountUtils.accountDtoEntityToResponse(rightEntity);
+        if (accountRepository.findByUserName(userName).isPresent()) {
+            AccountEntity rightEntity = accountRepository.findByUserName(userName).get();
+            return AccountUtils.accountDtoEntityToResponse(rightEntity);
+        } else {
+            return null;
+        }
     }
 
     public List<ResponseAccountDto> getSubscribers(String userName) {
@@ -50,7 +54,7 @@ public class AccountService {
             rightEntity = accountRepository.save(rightEntity);
             return AccountUtils.accountDtoEntityToResponse(rightEntity);
         } else {
-            return null;
+            throw new RuntimeException("Пользователь с таким userName " + userName + " уже существует");
         }
     }
 

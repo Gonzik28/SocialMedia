@@ -26,8 +26,12 @@ public class FriendshipController {
                                                                    @Parameter(description =
                                                                            "Идентификатор записи о подписке")
                                                                    Long id) {
-        ResponseFriendshipDto friendshipDto = friendshipService.findById(id);
-        return ResponseEntity.ok(friendshipDto);
+        if (friendshipService.findById(id) != null) {
+            ResponseFriendshipDto friendshipDto = friendshipService.findById(id);
+            return ResponseEntity.ok(friendshipDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/create")

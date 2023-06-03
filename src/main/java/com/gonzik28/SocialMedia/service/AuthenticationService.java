@@ -33,8 +33,12 @@ public class AuthenticationService {
     }
 
     public ResponseAuthenticationDto findByUserName(String userName) {
-        AuthenticationEntity authenticationEntity = authenticationRepository.findByUserName(userName).get();
-        return AuthenticationUtils.authenticationEntityToResponse(authenticationEntity);
+        if (authenticationRepository.findByUserName(userName).isPresent()) {
+            AuthenticationEntity authenticationEntity = authenticationRepository.findByUserName(userName).get();
+            return AuthenticationUtils.authenticationEntityToResponse(authenticationEntity);
+        } else {
+            return null;
+        }
     }
 
     public ResponseAuthenticationDto findByUserNamePassword(String userName, String password) {
@@ -108,7 +112,7 @@ public class AuthenticationService {
                 .setSubject(username)
                 .claim("authorities",
                         grantedAuthorities.stream()
-                                .map(GrantedAuthority :: getAuthority)
+                                .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TIME))

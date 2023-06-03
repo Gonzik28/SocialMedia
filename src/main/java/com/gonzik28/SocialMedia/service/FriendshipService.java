@@ -23,8 +23,12 @@ public class FriendshipService {
     }
 
     public ResponseFriendshipDto findById(Long id) {
-        FriendshipRequestEntity friendshipRequestEntity = friendshipRepository.findById(id).get();
-        return FriendshipUtils.friendshipEntityToResponse(friendshipRequestEntity);
+        if (friendshipRepository.findById(id).isPresent()) {
+            FriendshipRequestEntity friendshipRequestEntity = friendshipRepository.findById(id).get();
+            return FriendshipUtils.friendshipEntityToResponse(friendshipRequestEntity);
+        } else {
+            return null;
+        }
     }
 
     public ResponseFriendshipDto create(RequestFriendshipDto requestFriendshipDto) {

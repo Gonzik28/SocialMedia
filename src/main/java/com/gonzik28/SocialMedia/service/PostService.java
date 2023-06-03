@@ -33,8 +33,12 @@ public class PostService {
     }
 
     public ResponsePostDto findById(String id) {
-        PostEntity postEntity = postRepository.findById(id).get();
-        return PostUtils.postEntityToResponse(postEntity);
+        if (postRepository.findById(id).isPresent()) {
+            PostEntity postEntity = postRepository.findById(id).get();
+            return PostUtils.postEntityToResponse(postEntity);
+        } else {
+            return null;
+        }
     }
 
     public ResponsePostDto create(RequestPostDto requestPostDto) {

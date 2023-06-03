@@ -23,8 +23,12 @@ public class PostController {
     public ResponseEntity<ResponsePostDto> findById(@PathVariable
                                                     @Parameter(description = "Идентификатор публикации")
                                                     String id) {
-        ResponsePostDto postDto = postService.findById(id);
-        return ResponseEntity.ok(postDto);
+        if (postService.findById(id) != null) {
+            ResponsePostDto postDto = postService.findById(id);
+            return ResponseEntity.ok(postDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping(value = "/create/")

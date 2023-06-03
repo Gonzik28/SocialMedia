@@ -33,8 +33,12 @@ public class AuthenticationController {
     public ResponseEntity<ResponseAuthenticationDto> findByUserName(@PathVariable
                                                                     @Parameter(description = "Имя пользователя")
                                                                     String userName) {
-        ResponseAuthenticationDto authenticationDto = authenticationService.findByUserName(userName);
-        return ResponseEntity.ok(authenticationDto);
+        if (authenticationService.findByUserName(userName) != null) {
+            ResponseAuthenticationDto authenticationDto = authenticationService.findByUserName(userName);
+            return ResponseEntity.ok(authenticationDto);
+        } else {
+            return (ResponseEntity<ResponseAuthenticationDto>) ResponseEntity.notFound();
+        }
     }
 
     @GetMapping(value = "/")

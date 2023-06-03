@@ -27,8 +27,13 @@ public class AccountController {
     public ResponseEntity<ResponseAccountDto> findByUserName(@PathVariable
                                                              @Parameter(description = "Имя пользователя")
                                                              String userName) {
-        ResponseAccountDto rightDto = accountService.findByUserName(userName);
-        return ResponseEntity.ok(rightDto);
+        if (accountService.findByUserName(userName) != null) {
+            ResponseAccountDto rightDto = accountService.findByUserName(userName);
+            return ResponseEntity.ok(rightDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @GetMapping(value = "/subscriber/{userName}")
